@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JALWA PREDICTOR</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6e45e2;
+            --secondary: #88d3ce;
+            --accent: #ff7e5f;
+            --dark: #2a2d3e;
+            --light: #f9f9ff;
+            --success: #4caf50;
+            --error: #f44336;
+            --warning: #ff9800;
+            --hacker-green: #00ff00;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Hacking background effects */
+        .matrix-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.03;
+            pointer-events: none;
+        }
+
+        .binary-code {
+            position: absolute;
+            color: var(--primary);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            opacity: 0;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0,0,0,0.03),
+                rgba(0,0,0,0.03) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            position: relative;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+            animation: float 3s ease-in-out infinite, glitch 5s infinite alternate;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @keyframes glitch {
+            0%, 100% { transform: translateX(0); filter: drop-shadow(0 0 0 rgba(110, 69, 226, 0)); }
+            2% { transform: translateX(-2px); }
+            4% { transform: translateX(2px); }
+            6% { transform: translateX(-1px); }
+            8% { transform: translateX(1px); }
+            10% { transform: translateX(0); }
+            50% { filter: drop-shadow(-3px 0 2px rgba(110, 69, 226, 0.3)); }
+            51% { filter: drop-shadow(3px 0 2px rgba(255, 126, 95, 0.3)); }
+        }
+
+        .title-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: var(--dark);
+            opacity: 0.8;
+            font-size: 0.8rem;
+            font-family: 'Share Tech Mono', monospace;
+            letter-spacing: 1px;
+        }
+
+        /* User Counter */
+        .user-counter {
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(5px);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin: 0 auto 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.3);
+            animation: fadeIn 0.5s ease-out;
+            font-family: 'Share Tech Mono', monospace;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-counter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(110, 69, 226, 0.1), transparent);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .user-counter i {
+            color: var(--primary);
+        }
+
+        /* Game Selection */
+        .game-selection {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .game-btn {
+            background: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1;
+            font-family: 'Share Tech Mono', monospace;
+            letter-spacing: 1px;
+        }
+
+        .game-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .game-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .game-btn.active {
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(110, 69, 226, 0.3);
+        }
+
+        .game-btn.active::before {
+            opacity: 1;
+        }
+
+        .game-btn.active::after {
+            transform: scaleX(1);
+        }
+
+        .game-btn i {
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .game-btn.active i {
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Prediction Area */
+        .prediction-area {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: slideUp 0.5s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prediction-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            animation: progress 3s linear infinite;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; left: 0; }
+            50% { width: 100%; left: 0; }
+            100% { width: 0%; left: 100%; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.8);
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(110, 69, 226, 0.2);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+            animation: shake 0.3s ease;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        .prediction-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(110, 69, 226, 0.3);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .prediction-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(110, 69, 226, 0.4);
+        }
+
+        .prediction-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .prediction-icon {
+            width: 24px;
+            height: 24px;
+            transition: all 0.3s ease;
+        }
+
+        /* Result Display */
+        .result-container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                rgba(110, 69, 226, 0.05) 0%,
+                rgba(255, 126, 95, 0.05) 100%
+            );
+            z-index: -1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .result-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+            font-weight: 600;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .result-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 10px;
+            animation: pulse 2s infinite;
+            display: inline-block;
+            min-width: 200px;
+            font-family: 'Orbitron', sans-serif;
+            position: relative;
+        }
+
+        .result-value::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            animation: linePulse 2s infinite;
+        }
+
+        @keyframes linePulse {
+            0% { width: 0%; opacity: 0; }
+            50% { width: 50%; opacity: 1; }
+            100% { width: 0%; opacity: 0; left: 100%; }
+        }
+
+        .big-red {
+            color: #ff4757;
+            background: linear-gradient(135deg, rgba(255,71,87,0.1) 0%, rgba(255,71,87,0.05) 100%);
+            border: 1px solid rgba(255,71,87,0.2);
+        }
+
+        .small-red {
+            color: #ff4757;
+            background: linear-gradient(135deg, rgba(255,71,87,0.1) 0%, rgba(255,71,87,0.05) 100%);
+            border: 1px solid rgba(255,71,87,0.2);
+        }
+
+        .big-green {
+            color: #2ed573;
+            background: linear-gradient(135deg, rgba(46,213,115,0.1) 0%, rgba(46,213,115,0.05) 100%);
+            border: 1px solid rgba(46,213,115,0.2);
+        }
+
+        .small-green {
+            color: #2ed573;
+            background: linear-gradient(135deg, rgba(46,213,115,0.1) 0%, rgba(46,213,115,0.05) 100%);
+            border: 1px solid rgba(46,213,115,0.2);
+        }
+
+        .big-violet {
+            color: #a55eea;
+            background: linear-gradient(135deg, rgba(165,94,234,0.1) 0%, rgba(165,94,234,0.05) 100%);
+            border: 1px solid rgba(165,94,234,0.2);
+        }
+
+        .small-violet {
+            color: #a55eea;
+            background: linear-gradient(135deg, rgba(165,94,234,0.1) 0%, rgba(165,94,234,0.05) 100%);
+            border: 1px solid rgba(165,94,234,0.2);
+        }
+
+        .chance-indicator {
+            font-size: 1rem;
+            margin-top: 10px;
+            color: var(--dark);
+            opacity: 0.8;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .chance-value {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Info Box */
+        .info-box {
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(5px);
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--warning);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeIn 0.8s ease-out;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .action-btn {
+            padding: 12px 25px;
+            border-radius: 12px;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            min-width: 180px;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .action-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%, -50%);
+            transform-origin: 50% 50%;
+        }
+
+        .action-btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+
+        .register-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, #8a63e6 100%);
+            position: relative;
+        }
+
+        /* Bonus tag styles - Positioned top-right */
+        .bonus-tag {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: linear-gradient(135deg, #ff7e5f 0%, #ff9a7a 100%);
+            color: white;
+            font-size: 0.7rem;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(255, 126, 95, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            z-index: 2;
+            animation: pulse 1.5s infinite;
+        }
+
+        .bonus-tag i {
+            font-size: 0.8rem;
+        }
+
+        .register-btn-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .telegram-btn {
+            background: linear-gradient(135deg, #0088cc 0%, #00aced 100%);
+        }
+
+        .gift-btn {
+            background: linear-gradient(135deg, var(--accent) 0%, #ff9a7a 100%);
+        }
+
+        .support-btn {
+            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .action-btn i {
+            font-size: 1.1rem;
+        }
+
+        /* Web Hack Button */
+        .web-hack-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #2ed573 0%, #4caf50 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 99;
+        }
+
+        .web-hack-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .web-hack-btn i {
+            font-size: 1rem;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            display: none;
+            backdrop-filter: blur(3px);
+        }
+
+        .loading-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            animation: scaleIn 0.3s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            animation: progress 1.5s linear infinite;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .loading-text {
+            color: var(--dark);
+            margin-top: 20px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(110, 69, 226, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Terminal Effect */
+        .terminal-line {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 12px;
+            color: var(--primary);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .title {
+                font-size: 1.3rem;
+            }
+
+            .game-selection {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .game-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .prediction-area, .result-container, .info-box {
+                padding: 20px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+            }
+            
+            .bonus-tag {
+                right: 0;
+                top: -12px;
+            }
+            
+            .web-hack-btn {
+                bottom: 10px;
+                right: 10px;
+                font-size: 0.8rem;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix background effect -->
+    <div class="matrix-effect" id="matrixEffect"></div>
+    <div class="scanlines"></div>
+
+    <div class="container">
+        <header class="header">
+            <img src="91club.png" alt="Logo" class="logo">
+            <div class="title-container">
+                <h1 class="title">JALWA PREDICTOR</h1>
+                <p class="subtitle">>_ ANALYZING GAME PATTERNS...</p>
+            </div>
+        </header>
+
+        <div class="user-counter">
+            <i class="fas fa-users"></i>
+            <span>ACTIVE_USERS: <span class="count">15,342</span></span>
+        </div>
+
+        <div class="game-selection">
+            <button class="game-btn active" data-game="wingo-30s">
+                <i class="fas fa-bolt"></i>
+                WINGO_30S
+            </button>
+            <button class="game-btn" data-game="wingo-1m">
+                <i class="fas fa-clock"></i>
+                WINGO_1M
+            </button>
+        </div>
+
+        <div class="prediction-area">
+            <div class="input-group">
+                <label for="period-number" class="input-label">>_ ENTER_PERIOD_NUMBER</label>
+                <input type="number" id="period-number" class="input-field" placeholder="e.g., 123456">
+                <div class="error-message empty">ERROR: INPUT_REQUIRED</div>
+                <div class="error-message duplicate">ERROR: PERIOD_USED</div>
+            </div>
+            <button class="prediction-btn">
+                <img src="https://cdn-icons-png.flaticon.com/512/3291/3291667.png" alt="Magic" class="prediction-icon">
+                START_ANALYSIS
+            </button>
+        </div>
+
+        <div class="result-container">
+            <div class="result-title">PREDICTION_RESULT</div>
+            <div class="result-value"></div>
+            <div class="chance-indicator">ACCURACY: <span class="chance-value">85%</span></div>
+        </div>
+
+        <div class="info-box">
+            <p class="info-text">
+                >_ NOTE: FOR ACCURATE RESULTS, REGISTER NEW ACCOUNT. OLD ACCOUNTS MAY CAUSE PREDICTION ERRORS.
+                <br>सर्वोत्तम परिणामों के लिए, नया गेम account बनाए । पुराने account में लॉस हो सकता है अथवा समस्याए पैदा हो सकती हैं।
+            </p>
+        </div>
+
+        <div class="action-buttons">
+            <div class="register-btn-container">
+                <button class="action-btn register-btn" id="registerBtn">
+                    <i class="fas fa-user-plus"></i>
+                    REGISTER
+                </button>
+                <div class="bonus-tag">
+                    <i class="fas fa-gift"></i> BONUS
+                </div>
+            </div>
+            <button class="action-btn telegram-btn" id="telegramBtn">
+                <i class="fab fa-telegram"></i>
+                TELEGRAM
+            </button>
+            <button class="action-btn gift-btn" id="giftBtn">
+                <i class="fas fa-gift"></i>
+                GIFT_CODE
+            </button>
+            <button class="action-btn support-btn" id="supportBtn">
+                <i class="fas fa-headset"></i>
+                SUPPORT
+            </button>
+        </div>
+    </div>
+
+    <!-- Web Hack Button -->
+    <button class="web-hack-btn" id="webHackBtn">
+        <i class="fas fa-lock-open"></i> WEB HACK
+    </button>
+
+    <div class="loading-overlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p class="loading-text">DECRYPTING_GAME_ALGORITHM...</p>
+        </div>
+    </div>
+
+    <div class="terminal-line">>_ SYSTEM_READY_FOR_INPUT</div>
+
+    <script>
+        // Function to open URL in external browser
+        function openInBrowser(url) {
+            // This will be handled by Android WebView's shouldOverrideUrlLoading
+            window.open(url, '_system');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create matrix effect
+            function createMatrixEffect() {
+                const chars = "01";
+                const container = document.getElementById('matrixEffect');
+                
+                for (let i = 0; i < 50; i++) {
+                    const binaryCode = document.createElement('div');
+                    binaryCode.classList.add('binary-code');
+                    binaryCode.textContent = Array(20).fill(0).map(() => chars[Math.floor(Math.random() * chars.length)]).join(' ');
+                    binaryCode.style.left = `${Math.random() * 100}%`;
+                    binaryCode.style.animationDuration = `${5 + Math.random() * 10}s`;
+                    binaryCode.style.animationDelay = `${Math.random() * 5}s`;
+                    container.appendChild(binaryCode);
+                }
+            }
+            
+            createMatrixEffect();
+            
+            // User Counter
+            function updateUserCounter() {
+                const minUsers = 8000;
+                const maxUsers = 25000;
+                const randomChange = Math.floor(Math.random() * 500) - 250;
+                
+                const counter = document.querySelector('.count');
+                let currentUsers = parseInt(counter.textContent.replace(/,/g, ''));
+                currentUsers += randomChange;
+                
+                currentUsers = Math.max(minUsers, Math.min(maxUsers, currentUsers));
+                counter.textContent = currentUsers.toLocaleString();
+                
+                setTimeout(updateUserCounter, 2000 + Math.random() * 2000);
+            }
+            
+            updateUserCounter();
+            
+            // Game Selection
+            const gameButtons = document.querySelectorAll('.game-btn');
+            gameButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    gameButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Animation
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 200);
+                });
+            });
+            
+            // Prediction Form
+            const periodInput = document.getElementById('period-number');
+            const predictionBtn = document.querySelector('.prediction-btn');
+            const emptyError = document.querySelector('.error-message.empty');
+            const duplicateError = document.querySelector('.error-message.duplicate');
+            const resultContainer = document.querySelector('.result-container');
+            const resultValue = document.querySelector('.result-value');
+            const chanceValue = document.querySelector('.chance-value');
+            const loadingOverlay = document.querySelector('.loading-overlay');
+            
+            const usedPeriods = new Set();
+            const possibleResults = [
+                'Big Red', 'Small Red',
+                'Big Green', 'Small Green',
+                'Big Violet', 'Small Violet'
+            ];
+            
+            // Action Buttons - Redirects
+            document.getElementById('registerBtn').addEventListener('click', () => {
+                openInBrowser('https://colorsignup.github.io/ES1/Jalwa.html');
+            });
+            
+            document.getElementById('telegramBtn').addEventListener('click', () => {
+                openInBrowser('https://t.me/EarningScripter1');
+            });
+            
+            document.getElementById('giftBtn').addEventListener('click', () => {
+                openInBrowser('https://t.me/+MNnTbRNLPw0yNjhl');
+            });
+            
+            document.getElementById('supportBtn').addEventListener('click', () => {
+                openInBrowser('https://t.me/EarningScripter1_bot');
+            });
+            
+            // Web Hack Button
+            document.getElementById('webHackBtn').addEventListener('click', () => {
+                openInBrowser('https://apksdownload.github.io/Online-Hack/');
+            });
+            
+            // Prediction Logic
+            predictionBtn.addEventListener('click', function() {
+                const period = periodInput.value.trim();
+                
+                // Hide all errors initially
+                emptyError.style.display = 'none';
+                duplicateError.style.display = 'none';
+                
+                // Validate empty input
+                if (!period) {
+                    emptyError.style.display = 'block';
+                    periodInput.focus();
+                    return;
+                }
+                
+                // Validate duplicate period
+                if (usedPeriods.has(period)) {
+                    duplicateError.style.display = 'block';
+                    periodInput.focus();
+                    return;
+                }
+                
+                // Add to used periods
+                usedPeriods.add(period);
+                
+                // Disable button during processing
+                predictionBtn.disabled = true;
+                
+                // Show loading overlay with animation
+                loadingOverlay.style.display = 'flex';
+                setTimeout(() => {
+                    loadingOverlay.querySelector('.loading-content').style.opacity = '1';
+                }, 10);
+                
+                // Simulate processing (2-3 seconds)
+                const processingTime = 2000 + Math.random() * 1000;
+                
+                setTimeout(() => {
+                    // Hide loading overlay
+                    loadingOverlay.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingOverlay.style.display = 'none';
+                        loadingOverlay.style.opacity = '1';
+                    }, 300);
+                    
+                    // Enable button
+                    predictionBtn.disabled = false;
+                    
+                    // Generate random result
+                    const randomIndex = Math.floor(Math.random() * possibleResults.length);
+                    const result = possibleResults[randomIndex];
+                    const chance = Math.floor(Math.random() * 41) + 50; // 50-90%
+                    
+                    // Display result with animation
+                    resultValue.textContent = result;
+                    resultValue.className = 'result-value';
+                    
+                    // Add appropriate class based on result
+                    if (result.includes('Red')) {
+                        resultValue.classList.add('big-red', 'small-red');
+                    } else if (result.includes('Green')) {
+                        resultValue.classList.add('big-green', 'small-green');
+                    } else {
+                        resultValue.classList.add('big-violet', 'small-violet');
+                    }
+                    
+                    chanceValue.textContent = `${chance}%`;
+                    resultContainer.style.display = 'block';
+                    
+                    // Add hacking terminal effect
+                    const terminal = document.querySelector('.terminal-line');
+                    terminal.textContent = `>_ ANALYSIS_COMPLETE: ${result.toUpperCase()} (${chance}%_ACCURACY)`;
+                    
+                    // Scroll to result smoothly
+                    setTimeout(() => {
+                        resultContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100);
+                    
+                    // Add glitch effect to result
+                    let glitchCount = 0;
+                    const glitchInterval = setInterval(() => {
+                        if (glitchCount >= 5) {
+                            clearInterval(glitchInterval);
+                            resultValue.style.textShadow = 'none';
+                            return;
+                        }
+                        
+                        resultValue.style.textShadow = `
+                            ${Math.random() * 3}px ${Math.random() * 3}px 0 rgba(110, 69, 226, 0.3),
+                            ${Math.random() * -3}px ${Math.random() * -3}px 0 rgba(255, 126, 95, 0.3)
+                        `;
+                        glitchCount++;
+                    }, 100);
+                }, processingTime);
+            });
+            
+            // Input validation - hide errors when typing
+            periodInput.addEventListener('input', function() {
+                emptyError.style.display = 'none';
+                duplicateError.style.display = 'none';
+            });
+            
+            // Add animation to prediction button on hover
+            predictionBtn.addEventListener('mouseenter', function() {
+                if (!this.disabled) {
+                    this.querySelector('img').style.transform = 'rotate(15deg) scale(1.1)';
+                }
+            });
+            
+            predictionBtn.addEventListener('mouseleave', function() {
+                this.querySelector('img').style.transform = 'rotate(0) scale(1)';
+            });
+            
+            // Terminal effect - random commands
+            const commands = [
+                "INITIALIZING_PREDICTION_ENGINE",
+                "CONNECTING_TO_SERVER",
+                "ANALYZING_HISTORICAL_DATA",
+                "CALCULATING_PROBABILITIES",
+                "OPTIMIZING_ALGORITHM",
+                "SYSTEM_READY"
+            ];
+            
+            let commandIndex = 0;
+            setInterval(() => {
+                const terminal = document.querySelector('.terminal-line');
+                terminal.textContent = `>_ ${commands[commandIndex]}`;
+                commandIndex = (commandIndex + 1) % commands.length;
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
