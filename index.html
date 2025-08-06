@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM ACCESS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6e45e2;
+            --secondary: #88d3ce;
+            --accent: #ff7e5f;
+            --dark: #2a2d3e;
+            --light: #f9f9ff;
+            --success: #4caf50;
+            --error: #f44336;
+            --warning: #ff9800;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Matrix Background */
+        .matrix-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.03;
+            pointer-events: none;
+        }
+
+        .binary-code {
+            position: absolute;
+            color: var(--primary);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            opacity: 0;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh); }
+        }
+
+        /* Scanlines */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0,0,0,0.03),
+                rgba(0,0,0,0.03) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.4rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--dark);
+            opacity: 0.8;
+            font-size: 0.9rem;
+            font-family: 'Share Tech Mono', monospace;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        /* Buttons */
+        .button-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            color: white;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #8a63e6 100%);
+            padding: 10px 20px;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #0088cc 0%, #00aced 100%);
+        }
+
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent) 0%, #ff9a7a 100%);
+            padding: 10px 20px;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ff9800 0%, #ffb74d 100%);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        /* Game Grid */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid rgba(110, 69, 226, 0.1);
+        }
+
+        .game-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(110, 69, 226, 0.2);
+            border-color: rgba(110, 69, 226, 0.3);
+        }
+
+        .game-logo {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(110, 69, 226, 0.2);
+            transition: all 0.3s;
+        }
+
+        .game-container:hover .game-logo {
+            transform: scale(1.05);
+            border-color: rgba(110, 69, 226, 0.5);
+        }
+
+        .game-name {
+            font-size: 14px;
+            margin: 10px 0 0;
+            color: var(--dark);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            transition: all 0.3s;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .game-container:hover .game-name {
+            color: var(--primary);
+        }
+
+        /* Footer */
+        .customer-service {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            position: relative;
+        }
+
+        .customer-service::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(110, 69, 226, 0.5), transparent);
+        }
+
+        .info-text {
+            font-size: 14px;
+            color: rgba(42, 45, 62, 0.7);
+            margin-bottom: 15px;
+            line-height: 1.5;
+            letter-spacing: 0.5px;
+            font-family: 'Share Tech Mono', monospace;
+            background: rgba(255,255,255,0.7);
+            padding: 12px;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(110, 69, 226, 0.1);
+        }
+
+        /* Terminal */
+        .terminal-line {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 12px;
+            color: var(--primary);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .game-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .button-row {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            
+            .title {
+                font-size: 1.5rem;
+            }
+            
+            .btn {
+                padding: 8px 12px;
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Button Animation */
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+            100% { opacity: 0.3; }
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent 45%,
+                rgba(255, 255, 255, 0.2) 50%,
+                transparent 55%
+            );
+            transform: rotate(30deg);
+            animation: pulse 3s infinite linear;
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Effect -->
+    <div class="matrix-effect" id="matrixEffect"></div>
+    <div class="scanlines"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1 class="title">All Available Hacks List</h1>
+            <p class="subtitle">>_ Free available for all</p>
+            
+            
+            
+            <button class="btn btn-primary" id="telegramBtn">
+                <img src="https://icons.veryicon.com/png/o/object/material_design_icons/telegram-2.png" alt="Telegram" style="width:16px;height:16px;">
+                JOIN TELEGRAM
+            </button>
+        </div>
+        
+        <div class="game-grid">
+            <!-- Game Containers -->
+            <div class="game-container" data-href="1.html">
+                <img src="logo1.png" alt="91CLUB" class="game-logo">
+                <div class="game-name">91CLUB</div>
+            </div>
+            
+            <div class="game-container" data-href="2.html">
+                <img src="logo2.png" alt="55club" class="game-logo">
+                <div class="game-name">55club</div>
+            </div>
+            
+            <div class="game-container" data-href="3.html">
+                <img src="logo3.png" alt="in999" class="game-logo">
+                <div class="game-name">in999</div>
+            </div>
+            
+            <div class="game-container" data-href="4.html">
+                <img src="logo4.png" alt="Okwin" class="game-logo">
+                <div class="game-name">Daman</div>
+            </div>
+            
+            <div class="game-container" data-href="5.html">
+                <img src="logo5.png" alt="Tiranga" class="game-logo">
+                <div class="game-name">Okwin</div>
+            </div>
+            
+            <div class="game-container" data-href="6.html">
+                <img src="logo6.png" alt="Daman" class="game-logo">
+                <div class="game-name">Tiranga</div>
+            </div>
+            
+            <div class="game-container" data-href="7.html">
+                <img src="logo7.png" alt="BigMumbai" class="game-logo">
+                <div class="game-name">Big Daddy</div>
+            </div>
+            
+            <div class="game-container" data-href="8.html">
+                <img src="logo8.png" alt="BigDaddy" class="game-logo">
+                <div class="game-name">Bdgwin</div>
+            </div>
+            
+            <div class="game-container" data-href="9.html">
+                <img src="logo9.png" alt="BdgWin" class="game-logo">
+                <div class="game-name">Big Mumbai</div>
+            </div>
+            
+            <div class="game-container" data-href="10.html">
+                <img src="logo10.png" alt="Tashan" class="game-logo">
+                <div class="game-name">Jalwa Win</div>
+            </div>
+            
+            <div class="game-container" data-href="11.html">
+                <img src="logo11.png" alt="DiuWin" class="game-logo">
+                <div class="game-name">DiuWin</div>
+            </div>
+            
+            <div class="game-container" data-href="12.html">
+                <img src="logo12.png" alt="Jalwa Win" class="game-logo">
+                <div class="game-name">Tashan Win</div>
+            </div>
+            
+            <div class="game-container" data-href="13.html">
+                <img src="logo13.png" alt="Tc Lottery" class="game-logo">
+                <div class="game-name">82Lottery</div>
+            </div>
+            
+            <div class="game-container" data-href="14.html">
+                <img src="logo14.png" alt="51Club" class="game-logo">
+                <div class="game-name">51game</div>
+            </div>
+            
+            <div class="game-container" data-href="15.html">
+                <img src="logo15.png" alt="82lottery" class="game-logo">
+                <div class="game-name">Raja Lottery</div>
+            </div>
+            
+            <div class="game-container" data-href="16.html">
+                <img src="logo16.png" alt="Goa" class="game-logo">
+                <div class="game-name">Bdg Slots</div>
+            </div>
+            
+            <div class="game-container" data-href="17.html">
+                <img src="logo17.png" alt="Bg678" class="game-logo">
+                <div class="game-name">Kwg Game</div>
+            </div>
+            
+            <div class="game-container" data-href="18.html">
+                <img src="logo18.png" alt="Rajaluck" class="game-logo">
+                <div class="game-name">Tc Lottery</div>
+            </div>
+        </div>
+        
+        <!-- Customer Service -->
+        <div class="customer-service">
+            <div class="info-text">THIS SYSTEM GIVES YOU FREE PREDICTIONS FOR ALL THE GAMES ABOVE, AND WE ALWAYS PROVIDE YOU FREE HACKS AND BETTER PREDICTIONS SO JOIN OUR TELEFRAM FOR MORE MODS : @EarningScripter1</div>
+            <button class="btn btn-accent" id="customerServiceBtn">
+                <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" alt="Customer Service" style="width:16px;height:16px;">
+                CUSTOMER SUPPORT
+            </button>
+        </div>
+    </div>
+
+    <div class="terminal-line">>_ SYSTEM_READY_FOR_PREDICTION</div>
+
+    <script>
+        // Create matrix effect
+        function createMatrixEffect() {
+            const chars = "01";
+            const container = document.getElementById('matrixEffect');
+            
+            for (let i = 0; i < 50; i++) {
+                const binaryCode = document.createElement('div');
+                binaryCode.classList.add('binary-code');
+                binaryCode.textContent = Array(20).fill(0).map(() => chars[Math.floor(Math.random() * chars.length)]).join(' ');
+                binaryCode.style.left = `${Math.random() * 100}%`;
+                binaryCode.style.animationDuration = `${5 + Math.random() * 10}s`;
+                binaryCode.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(binaryCode);
+            }
+        }
+        
+        createMatrixEffect();
+        
+        // Function to open URL in external browser
+        function openInExternalBrowser(url) {
+            if (typeof Android !== 'undefined' && Android.openInExternalBrowser) {
+                Android.openInExternalBrowser(url);
+            } else {
+                window.open(url, '_system');
+            }
+        }
+
+        // Event Listeners
+        document.getElementById('telegramBtn').addEventListener('click', function() {
+            openInExternalBrowser('https://telegram.dog/EarningScripter1');
+        });
+
+        document.getElementById('customerServiceBtn').addEventListener('click', function() {
+            openInExternalBrowser('https://telegram.dog/EarningScripter1_Bot');
+        });
+
+        document.getElementById('claimButton').addEventListener('click', function() {
+            openInExternalBrowser('https://youtube.com');
+        });
+
+        document.getElementById('winningProofsButton').addEventListener('click', function() {
+            window.location.href = 'proof.html';
+        });
+
+        // Game container clicks
+        document.querySelectorAll('.game-container').forEach(container => {
+            container.addEventListener('click', function() {
+                const href = this.getAttribute('data-href');
+                if (href) window.location.href = href;
+            });
+        });
+
+        // Terminal commands
+        const commands = [
+            "INITIALIZING_SYSTEM",
+            "CONNECTING_TO_SERVER",
+            "LOADING_GAME_DATA",
+            "SYSTEM_READY",
+            "ACCESS_GRANTED"
+        ];
+        
+        let commandIndex = 0;
+        setInterval(() => {
+            const terminal = document.querySelector('.terminal-line');
+            terminal.textContent = `>_ ${commands[commandIndex]}`;
+            commandIndex = (commandIndex + 1) % commands.length;
+        }, 3000);
+    </script>
+</body>
+</html>
