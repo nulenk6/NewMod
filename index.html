@@ -465,16 +465,16 @@
         document.addEventListener('DOMContentLoaded', function() {
             createMatrixEffect();
             
-            // Function to open URL in external browser
+            // Function to open URL in external browser (only for Telegram and Customer Support)
             function openInExternalBrowser(url) {
                 if (typeof Android !== 'undefined' && Android.openInExternalBrowser) {
                     Android.openInExternalBrowser(url);
                 } else {
-                    window.open(url, '_system');
+                    window.open(url, '_blank');
                 }
             }
 
-            // Event Listeners
+            // Event Listeners for external links
             document.getElementById('telegramBtn').addEventListener('click', function() {
                 openInExternalBrowser('https://telegram.dog/EarningScripter1');
             });
@@ -483,7 +483,7 @@
                 openInExternalBrowser('https://telegram.dog/EarningScripter1_Bot');
             });
 
-            // Game container clicks - fixed this part
+            // Game container clicks - open in same window
             document.querySelectorAll('.game-container').forEach(container => {
                 container.addEventListener('click', function() {
                     const href = this.getAttribute('data-href');
