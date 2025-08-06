@@ -341,8 +341,8 @@
         
         <div class="game-grid">
             <!-- Game Containers -->
-            <div class="game-container" data-href="https://nulenk6.github.io/NewMod/">
-                <img src="91club.png" alt="91CLUB" class="game-logo">
+            <div class="game-container" data-href="1.html">
+                <img src="logo1.png" alt="91CLUB" class="game-logo">
                 <div class="game-name">91CLUB</div>
             </div>
             
@@ -461,57 +461,54 @@
             }
         }
         
-        createMatrixEffect();
-        
-        // Function to open URL in external browser
-        function openInExternalBrowser(url) {
-            if (typeof Android !== 'undefined' && Android.openInExternalBrowser) {
-                Android.openInExternalBrowser(url);
-            } else {
-                window.open(url, '_system');
+        // Wait for DOM to be fully loaded before attaching event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            createMatrixEffect();
+            
+            // Function to open URL in external browser
+            function openInExternalBrowser(url) {
+                if (typeof Android !== 'undefined' && Android.openInExternalBrowser) {
+                    Android.openInExternalBrowser(url);
+                } else {
+                    window.open(url, '_system');
+                }
             }
-        }
 
-        // Event Listeners
-        document.getElementById('telegramBtn').addEventListener('click', function() {
-            openInExternalBrowser('https://telegram.dog/EarningScripter1');
-        });
-
-        document.getElementById('customerServiceBtn').addEventListener('click', function() {
-            openInExternalBrowser('https://telegram.dog/EarningScripter1_Bot');
-        });
-
-        document.getElementById('claimButton').addEventListener('click', function() {
-            openInExternalBrowser('https://youtube.com');
-        });
-
-        document.getElementById('winningProofsButton').addEventListener('click', function() {
-            window.location.href = 'proof.html';
-        });
-
-        // Game container clicks
-        document.querySelectorAll('.game-container').forEach(container => {
-            container.addEventListener('click', function() {
-                const href = this.getAttribute('data-href');
-                if (href) window.location.href = href;
+            // Event Listeners
+            document.getElementById('telegramBtn').addEventListener('click', function() {
+                openInExternalBrowser('https://telegram.dog/EarningScripter1');
             });
-        });
 
-        // Terminal commands
-        const commands = [
-            "INITIALIZING_SYSTEM",
-            "CONNECTING_TO_SERVER",
-            "LOADING_GAME_DATA",
-            "SYSTEM_READY",
-            "ACCESS_GRANTED"
-        ];
-        
-        let commandIndex = 0;
-        setInterval(() => {
-            const terminal = document.querySelector('.terminal-line');
-            terminal.textContent = `>_ ${commands[commandIndex]}`;
-            commandIndex = (commandIndex + 1) % commands.length;
-        }, 3000);
+            document.getElementById('customerServiceBtn').addEventListener('click', function() {
+                openInExternalBrowser('https://telegram.dog/EarningScripter1_Bot');
+            });
+
+            // Game container clicks - fixed this part
+            document.querySelectorAll('.game-container').forEach(container => {
+                container.addEventListener('click', function() {
+                    const href = this.getAttribute('data-href');
+                    if (href) {
+                        window.location.href = href;
+                    }
+                });
+            });
+
+            // Terminal commands
+            const commands = [
+                "INITIALIZING_SYSTEM",
+                "CONNECTING_TO_SERVER",
+                "LOADING_GAME_DATA",
+                "SYSTEM_READY",
+                "ACCESS_GRANTED"
+            ];
+            
+            let commandIndex = 0;
+            setInterval(() => {
+                const terminal = document.querySelector('.terminal-line');
+                terminal.textContent = `>_ ${commands[commandIndex]}`;
+                commandIndex = (commandIndex + 1) % commands.length;
+            }, 3000);
+        });
     </script>
 </body>
 </html>
