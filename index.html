@@ -331,8 +331,6 @@
             <h1 class="title">All Available Hacks List</h1>
             <p class="subtitle">>_ Free available for all</p>
             
-            
-            
             <button class="btn btn-primary" id="telegramBtn">
                 <img src="https://icons.veryicon.com/png/o/object/material_design_icons/telegram-2.png" alt="Telegram" style="width:16px;height:16px;">
                 JOIN TELEGRAM
@@ -467,6 +465,7 @@
             
             // Function to open URL in external browser (only for Telegram and Customer Support)
             function openInExternalBrowser(url) {
+                // This will only be used for Telegram and Customer Support buttons
                 if (typeof Android !== 'undefined' && Android.openInExternalBrowser) {
                     Android.openInExternalBrowser(url);
                 } else {
@@ -483,12 +482,14 @@
                 openInExternalBrowser('https://telegram.dog/EarningScripter1_Bot');
             });
 
-            // Game container clicks - open in same window
+            // Game container clicks - STRICTLY open in same window
             document.querySelectorAll('.game-container').forEach(container => {
-                container.addEventListener('click', function() {
+                container.addEventListener('click', function(e) {
+                    e.preventDefault();
                     const href = this.getAttribute('data-href');
                     if (href) {
-                        window.location.href = href;
+                        // Force internal navigation
+                        window.location.assign(href);
                     }
                 });
             });
@@ -511,4 +512,4 @@
         });
     </script>
 </body>
-</html>
+</ht
