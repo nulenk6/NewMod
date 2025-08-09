@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hack Chat System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f0f0;
+    }
+    .chat-container {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      background: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      border-radius: 0;
+    }
+    .chat-box {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+    }
+    .message {
+      display: flex;
+      margin-bottom: 12px;
+      align-items: flex-start;
+    }
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
+    .bubble {
+      background: #e4e6eb;
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      max-width: 80%;
+    }
+    .bubble img {
+      margin-top: 6px;
+      max-width: 100%;
+      border-radius: 8px;
+    }
+    .input-area {
+      display: flex;
+      border-top: 1px solid #ccc;
+      padding: 8px;
+      background: #fff;
+    }
+    input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-size: 14px;
+      border-radius: 5px;
+    }
+    button {
+      background: #128c7e;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      margin-left: 8px;
+      border-radius: 5px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="chat-container">
+  <div class="chat-box" id="chatBox"></div>
+  <div class="input-area">
+    <input type="text" id="userInput" placeholder="Type a message..." />
+    <button onclick="sendUserMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+  const users = [
+    { name: "🔥Rajveer", photo: "https://randomuser.me/api/portraits/men/51.jpg" },
+    { name: "👑Divya", photo: "https://randomuser.me/api/portraits/women/52.jpg" },
+    { name: "💰Aayushi", photo: "https://randomuser.me/api/portraits/women/61.jpg" },
+    { name: "🚀Aditya", photo: "https://randomuser.me/api/portraits/men/60.jpg" },
+    { name: "🎯Simran", photo: "https://randomuser.me/api/portraits/women/50.jpg" },
+    { name: "🧠Karan", photo: "https://randomuser.me/api/portraits/men/65.jpg" },
+    { name: "🔥Neeraj", photo: "https://randomuser.me/api/portraits/men/48.jpg" },
+    { name: "💸Muskan", photo: "https://randomuser.me/api/portraits/women/49.jpg" },
+    { name: "⚡Yash", photo: "https://randomuser.me/api/portraits/men/55.jpg" },
+    { name: "👑Ishita", photo: "https://randomuser.me/api/portraits/women/54.jpg" },
+    { name: "💎Rohit", photo: "https://randomuser.me/api/portraits/men/59.jpg" },
+    { name: "💫Pooja", photo: "https://randomuser.me/api/portraits/women/58.jpg" },
+    { name: "🔥Lakshya", photo: "https://randomuser.me/api/portraits/men/63.jpg" },
+    { name: "❤️Sana", photo: "https://randomuser.me/api/portraits/women/63.jpg" },
+    { name: "💥Harsh", photo: "https://randomuser.me/api/portraits/men/52.jpg" }
+  ];
+
+  const messages = [
+    {
+      text: "भाई यकीन नहीं हो रहा, 15,000 का withdrawal हो गया 🔥 Hack ne kamaal kar diya!",
+      img: "20250629_191846 (1).jpg"
+    },
+    {
+      text: "This hack is 100% real bro. Just earned ₹22,400 in 6 mins!",
+      img: "20250629_191846 (2).jpg"
+    },
+    {
+      text: "3 baar win kiya back to back 😳 sab kuch change ho gaya!",
+      img: "20250629_191846 (3).jpg"
+    },
+    {
+      text: "आज पहली बार ₹9,800 जीता हूँ... dil se shukriya bhai 💖",
+      img: "20250629_191846 (4).jpg"
+    },
+    {
+      text: "Real working hack! No scam, only profit 💸💥",
+      img: "20250629_191846 (5).jpg"
+    },
+    {
+      text: "मेरे तो ₹12,000 निकल गए सीधे पेटीएम में 😂😂",
+      img: "20250629_191846 (6).jpg"
+    },
+    {
+      text: "Itna fast paisa kabhi nahi kamaya bhai 🔥 Hack sahi me dangerous hai",
+      img: "20250629_191846.jpg"
+    },
+    {
+      text: "भाई मेरे account me ₹25,000 aa gaya 😭 meri maa ro padi khushi se",
+      img: "20250629_191847 (1).jpg"
+    },
+    {
+      text: "Hack lagate hi 3 round jeeta consecutively 🔥🔥",
+      img: "20250629_191847 (2).jpg"
+    },
+    {
+      text: "I was broke. Now I’m up ₹17,900. Hack saved me.",
+      img: "20250629_191847.jpg"
+    }
+  ];
+
+  const chatBox = document.getElementById("chatBox");
+
+  function addMessage(name, photo, text, img = "") {
+    const msgDiv = document.createElement("div");
+    msgDiv.className = "message";
+    msgDiv.innerHTML = `
+      <img src="${photo}" class="avatar" />
+      <div class="bubble"><b>${name}</b><br>${text}${img ? `<img src="${img}" alt="proof" />` : ""}</div>
+    `;
+    chatBox.appendChild(msgDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  function sendUserMessage() {
+    const input = document.getElementById("userInput");
+    const text = input.value.trim();
+    if (text !== "") {
+      addMessage("You", "https://i.pravatar.cc/40?img=12", text, "");
+      input.value = "";
+    }
+  }
+
+  // 🟢 Show 1st message instantly
+  window.onload = () => {
+    const user = users[Math.floor(Math.random() * users.length)];
+    const msg = messages[Math.floor(Math.random() * messages.length)];
+    addMessage(user.name, user.photo, msg.text, msg.img);
+  };
+
+  // 🔁 Then every 5 sec
+  setInterval(() => {
+    const user = users[Math.floor(Math.random() * users.length)];
+    const msg = messages[Math.floor(Math.random() * messages.length)];
+    addMessage(user.name, user.photo, msg.text, msg.img);
+  }, 5000);
+</script>
+
+
+</body>
+</html>
