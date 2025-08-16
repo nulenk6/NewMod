@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviator Predictor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6e45e2;
+            --secondary: #88d3ce;
+            --accent: #ff7e5f;
+            --dark: #2a2d3e;
+            --light: #f9f9ff;
+            --success: #4caf50;
+            --error: #f44336;
+            --warning: #ff9800;
+            --hacker-green: #00ff00;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Hacking background effects */
+        .matrix-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.03;
+            pointer-events: none;
+        }
+
+        .binary-code {
+            position: absolute;
+            color: var(--primary);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            opacity: 0;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0,0,0,0.03),
+                rgba(0,0,0,0.03) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Game Selector Styles */
+        .game-selector-container {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .game-selector-btn {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            color: var(--dark);
+            font-size: 14px;
+            outline: none;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(110, 69, 226, 0.2);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .game-selector-btn:hover {
+            box-shadow: 0 0 20px rgba(110, 69, 226, 0.4);
+        }
+
+        .game-selector-btn .selected-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .game-selector-btn .selected-option img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .game-selector-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            margin-top: 5px;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 0 20px rgba(110, 69, 226, 0.3);
+        }
+
+        .game-selector-dropdown.show {
+            display: block;
+        }
+
+        .game-selector-search {
+            padding: 10px;
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 1;
+        }
+
+        .game-selector-search input {
+            width: 100%;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            color: var(--dark);
+            font-size: 14px;
+            outline: none;
+        }
+
+        .game-selector-options {
+            padding: 5px 0;
+        }
+
+        .game-option {
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .game-option:hover {
+            background: rgba(110, 69, 226, 0.1);
+        }
+
+        .game-option img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .game-option.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            position: relative;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+            animation: float 3s ease-in-out infinite, glitch 5s infinite alternate;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @keyframes glitch {
+            0%, 100% { transform: translateX(0); filter: drop-shadow(0 0 0 rgba(110, 69, 226, 0)); }
+            2% { transform: translateX(-2px); }
+            4% { transform: translateX(2px); }
+            6% { transform: translateX(-1px); }
+            8% { transform: translateX(1px); }
+            10% { transform: translateX(0); }
+            50% { filter: drop-shadow(-3px 0 2px rgba(110, 69, 226, 0.3)); }
+            51% { filter: drop-shadow(3px 0 2px rgba(255, 126, 95, 0.3)); }
+        }
+
+        .title-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: var(--dark);
+            opacity: 0.8;
+            font-size: 0.8rem;
+            font-family: 'Share Tech Mono', monospace;
+            letter-spacing: 1px;
+        }
+
+        /* User Counter */
+        .user-counter {
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(5px);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin: 0 auto 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.3);
+            animation: fadeIn 0.5s ease-out;
+            font-family: 'Share Tech Mono', monospace;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-counter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(110, 69, 226, 0.1), transparent);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .user-counter i {
+            color: var(--primary);
+        }
+
+        /* Animation Area */
+        .animation-area {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        .animation-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            animation: progress 3s linear infinite;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; left: 0; }
+            50% { width: 100%; left: 0; }
+            100% { width: 0%; left: 100%; }
+        }
+
+        /* ROTATING RAYS EFFECT */
+        .rotating-rays {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: 
+                conic-gradient(
+                    from 0deg,
+                    transparent 0%,
+                    rgba(110, 69, 226, 0.1) 10%,
+                    transparent 20%,
+                    rgba(255, 126, 95, 0.1) 30%,
+                    transparent 40%,
+                    rgba(110, 69, 226, 0.1) 50%,
+                    transparent 60%,
+                    rgba(255, 126, 95, 0.1) 70%,
+                    transparent 80%,
+                    rgba(110, 69, 226, 0.1) 90%,
+                    transparent 100%
+                );
+            z-index: 1;
+            animation: rotateRays 20s linear infinite;
+        }
+
+        @keyframes rotateRays {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .plane {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            width: 40px;
+            height: 40px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%236e45e2"><path d="M22 16.21v-1.895L14 8V4a2 2 0 0 0-4 0v4l-8 6.315v1.895l8-2.526V18l-2 2v2l3.5-1 3.5 1v-2l-2-2v-4.316l8 2.526z"/></svg>');
+            background-size: contain;
+            filter: drop-shadow(0 0 8px rgba(110, 69, 226, 0.8));
+            z-index: 10;
+            transform: rotate(45deg);
+        }
+
+        @keyframes planeGlow {
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(110, 69, 226, 0.8)); }
+            50% { filter: drop-shadow(0 0 15px rgba(110, 69, 226, 1)); }
+        }
+
+        /* CENTERED MULTIPLIER DISPLAY */
+        .multiplier-display {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--dark);
+            z-index: 5;
+            background: rgba(255,255,255,0.9);
+            padding: 10px 25px;
+            border-radius: 50px;
+            box-shadow: 0 0 25px rgba(110, 69, 226, 0.3);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* START BUTTON */
+        .start-button-container {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .btn-predict {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(110, 69, 226, 0.3);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .btn-predict:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(110, 69, 226, 0.4);
+        }
+
+        .btn-predict:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* WARNING MESSAGE */
+        .warning-box {
+            width: 100%;
+            padding: 15px 20px;
+            margin: 10px 0;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(5px);
+            border-left: 4px solid var(--warning);
+            border-radius: 12px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--dark);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* ACTION BUTTONS */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .action-btn {
+            padding: 12px 25px;
+            border-radius: 12px;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            min-width: 180px;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .register-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, #8a63e6 100%);
+            position: relative;
+        }
+
+        .telegram-btn {
+            background: linear-gradient(135deg, #0088cc 0%, #00aced 100%);
+        }
+
+        .support-btn {
+            background: linear-gradient(135deg, var(--accent) 0%, #ff9a7a 100%);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        /* Bonus tag styles - Positioned top-right */
+        .bonus-tag {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: linear-gradient(135deg, #ff7e5f 0%, #ff9a7a 100%);
+            color: white;
+            font-size: 0.7rem;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(255, 126, 95, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            z-index: 2;
+            animation: pulse 1.5s infinite;
+        }
+
+        .register-btn-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            display: none;
+            backdrop-filter: blur(3px);
+        }
+
+        .loading-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            animation: scaleIn 0.3s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            animation: progress 1.5s linear infinite;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .loading-text {
+            color: var(--dark);
+            margin-top: 20px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(110, 69, 226, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Terminal Effect */
+        .terminal-line {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 12px;
+            color: var(--primary);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .title {
+                font-size: 1.3rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+            }
+            
+            .bonus-tag {
+                right: 0;
+                top: -12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix background effect -->
+    <div class="matrix-effect" id="matrixEffect"></div>
+    <div class="scanlines"></div>
+
+    <div class="container">
+        <!-- Game Selector -->
+        <div class="game-selector-container">
+            <div class="game-selector-btn" id="gameSelectorBtn">
+                <div class="selected-option">
+                    <img src="default-logo.png" id="selectedGameLogo" alt="Game Logo">
+                    <span id="selectedGameName">SELECT YOUR GAME</span>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="game-selector-dropdown" id="gameSelectorDropdown">
+                <div class="game-selector-search">
+                    <input type="text" placeholder="Search games..." id="gameSearch">
+                </div>
+                <div class="game-selector-options" id="gameOptions">
+                    <!-- Options will be added dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <header class="header">
+            <img src="logo19.png" alt="Logo" class="logo" id="gameLogo">
+            <div class="title-container">
+                <h1 class="title" id="dynamicGameName">1WIN AVIATOR PREDICTOR</h1>
+                <p class="subtitle">>_ ANALYZING FLIGHT PATTERNS...</p>
+            </div>
+        </header>
+
+        <div class="user-counter">
+            <i class="fas fa-users"></i>
+            <span>ACTIVE_USERS: <span class="count" id="onlineUsers">15,342</span></span>
+        </div>
+
+        <!-- ANIMATION AREA -->
+        <div class="animation-area">
+            <div class="rotating-rays"></div>
+            <div class="multiplier-display" id="multiplierDisplay">1.00x</div>
+            <div class="plane" id="plane"></div>
+        </div>
+
+        <!-- START BUTTON -->
+        <div class="start-button-container">
+            <button class="btn-predict" id="predictBtn">
+                <i class="fas fa-rocket"></i> START PREDICTION
+            </button>
+        </div>
+
+        <!-- WARNING MESSAGE -->
+        <div class="warning-box">
+            <p class="info-text">
+                >_ NOTE: FOR ACCURATE RESULTS, REGISTER NEW ACCOUNT. OLD ACCOUNTS MAY CAUSE PREDICTION ERRORS.
+                <br>सर्वोत्तम परिणामों के लिए, नया गेम account बनाए । पुराने account में लॉस हो सकता है अथवा समस्याए पैदा हो सकती हैं।
+            </p>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="action-buttons">
+            <div class="register-btn-container">
+                <a href="#" id="registerBtn" class="action-btn register-btn">
+                    <i class="fas fa-user-plus"></i> REGISTER
+                </a>
+                <div class="bonus-tag">
+                    <i class="fas fa-gift"></i> BONUS
+                </div>
+            </div>
+            <a href="https://telegram.dog/EarningScripter1" target="_blank" class="action-btn telegram-btn">
+                <i class="fab fa-telegram"></i> TELEGRAM
+            </a>
+            <a href="https://telegram.dog/EarningScripter1_Bot" target="_blank" class="action-btn support-btn">
+                <i class="fas fa-headset"></i> SUPPORT
+            </a>
+        </div>
+    </div>
+
+    <div class="terminal-line">>_ SYSTEM_READY_FOR_INPUT</div>
+
+    <script>
+        // Game logos and register links mapping
+        const gameData = {
+            '91Club Hack': {
+                logo: 'logo1.png',
+                registerLink: 'https://colorsignup.github.io/ES1/91club'
+            },
+            '55Club Hack': {
+                logo: 'logo2.png',
+                registerLink: 'https://colorsignup.github.io/ES1/55club'
+            },
+            '1win Hack': {
+                logo: 'logo12.png',
+                registerLink: 'https://colorsignup.github.io/ES1/1win'
+            },
+            'In999 Hack': {
+                logo: 'logo3.png',
+                registerLink: 'https://colorsignup.github.io/ES1/In999'
+            },
+            'Daman Games Hack': {
+                logo: 'logo8.png',
+                registerLink: 'https://colorsignup.github.io/ES1/Damangames'
+            },
+            'Okwin Hack': {
+                logo: 'logo4.png',
+                registerLink: 'https://colorsignup.github.io/ES1/Okwin'
+            },
+            'Tiranga Hack': {
+                logo: 'logo5.png',
+                registerLink: 'https://colorsignup.github.io/ES1/Tiranga'
+            },
+            'BigDaddy Hack': {
+                logo: 'logo6.png',
+                registerLink: 'https://colorsignup.github.io/ES1/Bigdaddygame'
+            },
+            'Bdgwin Hack': {
+                logo: 'logo10.png',
+                registerLink: 'https://colorsignup.github.io/ES1/Bdgwin'
+            },
+            'Big Mumbai Hack': {
+                logo: 'logo7.png',
+                registerLink: 'https://colorsignup.github.io/ES1/Bigmumbai'
+            },
+            'Jalwa Hack': {
+                logo: 'logo12.png',
+                registerLink: 'https://colorsignup.github.io/ES1/Jalwa.html'
+            },
+            'Diuwin Hack': {
+                logo: 'logo10.png',
+                registerLink: 'https://colorsignup.github.io/ES1/Diuwin'
+            },
+             },
+            '82lottery Hack': {
+                logo: 'logo12.png',
+                registerLink: 'https://colorsignup.github.io/ES1/82lottery'
+            },
+            '51Game Hack': {
+                logo: 'logo13.png',
+                registerLink: 'https://colorsignup.github.io/ES1/51game'
+            },
+            'Raja Lottery Hack': {
+                logo: 'logo14.png',
+                registerLink: 'https://colorsignup.github.io/ES1/Rajalottery.html'
+            },
+            'Bdg Slots Hack': {
+                logo: 'logo15.png',
+                registerLink: 'https://colorsignup.github.io/ES1/bdgslots'
+            },
+            'Kwg Game Hack': {
+                logo: 'logo17.png',
+                registerLink: 'https://colorsignup.github.io/ES1/Kwg'
+            },
+            'Tc Lottery Hack': {
+                logo: 'logo11.png',
+                registerLink: 'https://colorsignup.github.io/ES1/Tclottery'
+            },
+        };
+
+        // Function to open URL in external browser
+        function openInBrowser(url) {
+            window.open(url, '_system');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const gameSelectorBtn = document.getElementById('gameSelectorBtn');
+            const gameSelectorDropdown = document.getElementById('gameSelectorDropdown');
+            const gameOptions = document.getElementById('gameOptions');
+            const gameSearch = document.getElementById('gameSearch');
+            const selectedGameName = document.getElementById('selectedGameName');
+            const selectedGameLogo = document.getElementById('selectedGameLogo');
+            const dynamicGameName = document.getElementById('dynamicGameName');
+            const gameLogo = document.getElementById('gameLogo');
+            const registerBtn = document.getElementById('registerBtn');
+            const onlineUsers = document.getElementById('onlineUsers');
+            
+            // Create game options
+            Object.keys(gameData).forEach(gameName => {
+                const gameOption = document.createElement('div');
+                gameOption.className = 'game-option';
+                gameOption.innerHTML = `
+                    <img src="${gameData[gameName].logo || 'default-logo.png'}" alt="${gameName} Logo">
+                    <span>${gameName}</span>
+                `;
+                gameOption.addEventListener('click', () => {
+                    selectGame(gameName);
+                });
+                gameOptions.appendChild(gameOption);
+            });
+            
+            // Toggle dropdown
+            gameSelectorBtn.addEventListener('click', () => {
+                gameSelectorDropdown.classList.toggle('show');
+                if (gameSelectorDropdown.classList.contains('show')) {
+                    gameSearch.focus();
+                }
+            });
+            
+            // Search functionality
+            gameSearch.addEventListener('input', () => {
+                const searchTerm = gameSearch.value.toLowerCase();
+                const options = gameOptions.querySelectorAll('.game-option');
+                
+                options.forEach(option => {
+                    const gameName = option.querySelector('span').textContent.toLowerCase();
+                    if (gameName.includes(searchTerm)) {
+                        option.style.display = 'flex';
+                    } else {
+                        option.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!gameSelectorBtn.contains(e.target) && !gameSelectorDropdown.contains(e.target)) {
+                    gameSelectorDropdown.classList.remove('show');
+                }
+            });
+            
+            // Select game function
+            function selectGame(gameName) {
+                selectedGameName.textContent = gameName;
+                selectedGameLogo.src = gameData[gameName].logo || 'default-logo.png';
+                gameSelectorDropdown.classList.remove('show');
+                
+                // Save to localStorage
+                localStorage.setItem('selectedGame', gameName);
+                updateGameInterface(gameName);
+            }
+            
+            function updateGameInterface(gameName) {
+                // Update the tool name
+                dynamicGameName.textContent = gameName.toUpperCase();
+                
+                // Update the game logo
+                const gameInfo = gameData[gameName] || {};
+                gameLogo.src = gameInfo.logo || 'default-logo.png';
+                gameLogo.alt = `${gameName} Logo`;
+                
+                // Update the register link
+                if (gameInfo.registerLink) {
+                    registerBtn.href = gameInfo.registerLink;
+                    registerBtn.onclick = (e) => {
+                        e.preventDefault();
+                        openInBrowser(gameInfo.registerLink);
+                    };
+                }
+                
+                // Update the title tag
+                document.title = gameName.toUpperCase();
+            }
+            
+            // Check localStorage for saved game
+            const savedGame = localStorage.getItem('selectedGame');
+            if (savedGame) {
+                selectGame(savedGame);
+            }
+
+            // Create matrix effect
+            function createMatrixEffect() {
+                const chars = "01";
+                const container = document.getElementById('matrixEffect');
+                
+                for (let i = 0; i < 50; i++) {
+                    const binaryCode = document.createElement('div');
+                    binaryCode.classList.add('binary-code');
+                    binaryCode.textContent = Array(20).fill(0).map(() => chars[Math.floor(Math.random() * chars.length)]).join(' ');
+                    binaryCode.style.left = `${Math.random() * 100}%`;
+                    binaryCode.style.animationDuration = `${5 + Math.random() * 10}s`;
+                    binaryCode.style.animationDelay = `${Math.random() * 5}s`;
+                    container.appendChild(binaryCode);
+                }
+            }
+            
+            createMatrixEffect();
+            
+            // User Counter
+            function updateUserCounter() {
+                const minUsers = 8000;
+                const maxUsers = 25000;
+                const randomChange = Math.floor(Math.random() * 500) - 250;
+                
+                let currentUsers = parseInt(onlineUsers.textContent.replace(/,/g, ''));
+                currentUsers += randomChange;
+                
+                currentUsers = Math.max(minUsers, Math.min(maxUsers, currentUsers));
+                onlineUsers.textContent = currentUsers.toLocaleString();
+                
+                setTimeout(updateUserCounter, 2000 + Math.random() * 2000);
+            }
+            
+            updateUserCounter();
+
+            const predictBtn = document.getElementById('predictBtn');
+            const plane = document.getElementById('plane');
+            const multiplierDisplay = document.getElementById('multiplierDisplay');
+
+            let isAnimating = false;
+
+            function startPrediction() {
+                if (isAnimating) return;
+                isAnimating = true;
+                
+                // Disable button during animation
+                predictBtn.disabled = true;
+                predictBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> PREDICTING...';
+                
+                // Reset positions
+                plane.style.bottom = '15px';
+                plane.style.left = '15px';
+                multiplierDisplay.textContent = '1.00x';
+                
+                // Generate random multiplier (1.00x - 3.00x)
+                const finalMultiplier = (Math.random() * 2 + 1).toFixed(2);
+                const animationDuration = 2000; // 2 seconds
+                
+                const startTime = Date.now();
+                
+                function animate() {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min(elapsed / animationDuration, 1);
+                    
+                    // Calculate current multiplier
+                    const currentMultiplier = (1 + (finalMultiplier - 1) * Math.pow(progress, 0.7)).toFixed(2);
+                    multiplierDisplay.textContent = `${currentMultiplier}x`;
+                    
+                    // Move plane diagonally (constrained)
+                    const maxRight = window.innerWidth * 0.7 - 50;
+                    const maxTop = 150;
+                    
+                    plane.style.left = `${15 + (progress * maxRight)}px`;
+                    plane.style.bottom = `${15 + (progress * maxTop)}px`;
+                    
+                    // Plane glow effect
+                    plane.style.animation = 'planeGlow 0.5s infinite';
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        // Animation complete
+                        plane.style.animation = 'none';
+                        
+                        // Enable button after 4 seconds total
+                        setTimeout(() => {
+                            predictBtn.disabled = false;
+                            predictBtn.innerHTML = '<i class="fas fa-rocket"></i> START PREDICTION';
+                            isAnimating = false;
+                        }, 2000);
+                    }
+                }
+                
+                requestAnimationFrame(animate);
+            }
+
+            predictBtn.addEventListener('click', startPrediction);
+
+            // Terminal effect - random commands
+            const commands = [
+                "INITIALIZING_PREDICTION_ENGINE",
+                "CONNECTING_TO_SERVER",
+                "ANALYZING_FLIGHT_PATTERNS",
+                "CALCULATING_PROBABILITIES",
+                "OPTIMIZING_ALGORITHM",
+                "SYSTEM_READY"
+            ];
+            
+            let commandIndex = 0;
+            setInterval(() => {
+                const terminal = document.querySelector('.terminal-line');
+                terminal.textContent = `>_ ${commands[commandIndex]}`;
+                commandIndex = (commandIndex + 1) % commands.length;
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
