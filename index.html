@@ -453,18 +453,40 @@
         /* New Tag */
         .new-tag {
             position: absolute;
-            top: -5px;
-            right: -5px;
+            top: -10px;
+            right: -10px;
             background: var(--accent);
             color: white;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-size: 10px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
             font-weight: bold;
-            transform: rotate(10deg);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transform: rotate(5deg);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
             z-index: 2;
             animation: pulse 1.5s infinite;
+        }
+
+        /* Recommended Tag */
+        .recommended-tag {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--success);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            transform: rotate(5deg);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            z-index: 2;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Game Container Wrapper */
+        .game-container-wrapper {
+            position: relative;
         }
 
         /* Responsive */
@@ -497,6 +519,13 @@
                 padding: 8px 12px;
                 font-size: 0.7rem;
                 max-width: 180px;
+            }
+
+            .recommended-tag, .new-tag {
+                font-size: 10px;
+                padding: 2px 8px;
+                top: -8px;
+                right: -8px;
             }
         }
 
@@ -581,106 +610,150 @@
         
         <div class="game-grid">
             <!-- Game Containers -->
-            <div class="game-container" data-href="1.html">
-                <img src="logo1.png" alt="91CLUB" class="game-logo">
-                <div class="game-name">91CLUB</div>
+            <div class="game-container-wrapper">
+                <span class="recommended-tag">RECOMMENDED</span>
+                <div class="game-container" data-href="1.html">
+                    <img src="logo1.png" alt="91CLUB" class="game-logo">
+                    <div class="game-name">91CLUB</div>
+                </div>
             </div>
             
-            <div class="game-container" data-href="2.html">
-                <img src="logo2.png" alt="55club" class="game-logo">
-                <div class="game-name">55club</div>
+            <div class="game-container-wrapper">
+                <span class="recommended-tag">RECOMMENDED</span>
+                <div class="game-container" data-href="2.html">
+                    <img src="logo2.png" alt="55club" class="game-logo">
+                    <div class="game-name">55club</div>
+                </div>
             </div>
             
-            <div class="game-container" data-href="3.html">
-                <img src="logo3.png" alt="in999" class="game-logo">
-                <div class="game-name">in999</div>
+            <div class="game-container-wrapper">
+                <span class="recommended-tag">RECOMMENDED</span>
+                <div class="game-container" data-href="3.html">
+                    <img src="logo3.png" alt="in999" class="game-logo">
+                    <div class="game-name">in999</div>
+                </div>
             </div>
             
-            <div class="game-container" data-href="4.html">
-                <img src="logo4.png" alt="Okwin" class="game-logo">
-                <div class="game-name">Daman</div>
+            <div class="game-container-wrapper">
+                <span class="recommended-tag">RECOMMENDED</span>
+                <div class="game-container" data-href="4.html">
+                    <img src="logo4.png" alt="Okwin" class="game-logo">
+                    <div class="game-name">Daman</div>
+                </div>
             </div>
             
-            <div class="game-container" data-href="5.html">
-                <img src="logo5.png" alt="Tiranga" class="game-logo">
-                <div class="game-name">Okwin</div>
+            <div class="game-container-wrapper">
+                <div class="game-container" data-href="5.html">
+                    <img src="logo5.png" alt="Tiranga" class="game-logo">
+                    <div class="game-name">Okwin</div>
+                </div>
             </div>
             
-            <div class="game-container" data-href="6.html">
-                <img src="logo6.png" alt="Daman" class="game-logo">
-                <div class="game-name">Tiranga</div>
+            <div class="game-container-wrapper">
+                <div class="game-container" data-href="6.html">
+                    <img src="logo6.png" alt="Daman" class="game-logo">
+                    <div class="game-name">Tiranga</div>
+                </div>
             </div>
             
-            <div class="game-container" data-href="7.html">
-                <img src="logo7.png" alt="BigMumbai" class="game-logo">
-                <div class="game-name">Big Daddy</div>
+            <div class="game-container-wrapper">
+                <div class="game-container" data-href="7.html">
+                    <img src="logo7.png" alt="BigMumbai" class="game-logo">
+                    <div class="game-name">Big Daddy</div>
+                </div>
             </div>
             
-            <div class="game-container" data-href="8.html">
-                <img src="logo8.png" alt="BigDaddy" class="game-logo">
-                <div class="game-name">Bdgwin</div>
+            <div class="game-container-wrapper">
+                <div class="game-container" data-href="8.html">
+                    <img src="logo8.png" alt="BigDaddy" class="game-logo">
+                    <div class="game-name">Bdgwin</div>
+                </div>
             </div>
             
-            <div class="game-container" data-href="9.html">
-                <img src="logo9.png" alt="BdgWin" class="game-logo">
-                <div class="game-name">Big Mumbai</div>
+            <div class="game-container-wrapper">
+                <div class="game-container" data-href="9.html">
+                    <img src="logo9.png" alt="BdgWin" class="game-logo">
+                    <div class="game-name">Big Mumbai</div>
+                </div>
             </div>
             
-            <div class="game-container" data-href="10.html">
-                <img src="logo10.png" alt="Tashan" class="game-logo">
-                <div class="game-name">Jalwa Win</div>
+            <div class="game-container-wrapper">
+                <div class="game-container" data-href="10.html">
+                    <img src="logo10.png" alt="Tashan" class="game-logo">
+                    <div class="game-name">Jalwa Win</div>
+                </div>
             </div>
             
-            <div class="game-container" data-href="11.html">
-                <img src="logo11.png" alt="DiuWin" class="game-logo">
-                <div class="game-name">DiuWin</div>
+            <div class="game-container-wrapper">
+                <div class="game-container" data-href="11.html">
+                    <img src="logo11.png" alt="DiuWin" class="game-logo">
+                    <div class="game-name">DiuWin</div>
+                </div>
             </div>
             
-            <div class="game-container" data-href="12.html">
-                <img src="logo12.png" alt="Jalwa Win" class="game-logo">
-                <div class="game-name">Tashan Win</div>
+            <div class="game-container-wrapper">
+                <div class="game-container" data-href="12.html">
+                    <img src="logo12.png" alt="Jalwa Win" class="game-logo">
+                    <div class="game-name">Tashan Win</div>
+                </div>
             </div>
             
-            <div class="game-container" data-href="13.html">
-                <img src="logo13.png" alt="Tc Lottery" class="game-logo">
-                <div class="game-name">82Lottery</div>
+            <div class="game-container-wrapper">
+                <div class="game-container" data-href="13.html">
+                    <img src="logo13.png" alt="Tc Lottery" class="game-logo">
+                    <div class="game-name">82Lottery</div>
+                </div>
             </div>
             
-            <div class="game-container" data-href="14.html">
-                <img src="logo14.png" alt="51Club" class="game-logo">
-                <div class="game-name">51game</div>
+            <div class="game-container-wrapper">
+                <div class="game-container" data-href="14.html">
+                    <img src="logo14.png" alt="51Club" class="game-logo">
+                    <div class="game-name">51game</div>
+                </div>
             </div>
             
-            <div class="game-container" data-href="15.html">
-                <img src="logo15.png" alt="82lottery" class="game-logo">
-                <div class="game-name">Raja Lottery</div>
+            <div class="game-container-wrapper">
+                <div class="game-container" data-href="15.html">
+                    <img src="logo15.png" alt="82lottery" class="game-logo">
+                    <div class="game-name">Raja Lottery</div>
+                </div>
             </div>
             
-            <div class="game-container" data-href="16.html">
-                <img src="logo16.png" alt="Goa" class="game-logo">
-                <div class="game-name">Bdg Slots</div>
+            <div class="game-container-wrapper">
+                <div class="game-container" data-href="16.html">
+                    <img src="logo16.png" alt="Goa" class="game-logo">
+                    <div class="game-name">Bdg Slots</div>
+                </div>
             </div>
             
-            <div class="game-container" data-href="17.html">
-                <img src="logo17.png" alt="Bg678" class="game-logo">
-                <div class="game-name">Kwg Game</div>
+            <div class="game-container-wrapper">
+                <div class="game-container" data-href="17.html">
+                    <img src="logo17.png" alt="Bg678" class="game-logo">
+                    <div class="game-name">Kwg Game</div>
+                </div>
             </div>
             
-            <div class="game-container" data-href="18.html">
-                <img src="logo18.png" alt="Rajaluck" class="game-logo">
-                <div class="game-name">Tc Lottery</div>
+            <div class="game-container-wrapper">
+                <div class="game-container" data-href="18.html">
+                    <img src="logo18.png" alt="Rajaluck" class="game-logo">
+                    <div class="game-name">Tc Lottery</div>
+                </div>
             </div>
             
             <!-- Newly added games -->
-            <div class="game-container" data-href="19.html">
-                <img src="logo19.png" alt="Aviator" class="game-logo">
+            <div class="game-container-wrapper">
                 <span class="new-tag">NEW</span>
-                <div class="game-name">Aviator</div>
+                <div class="game-container" data-href="19.html">
+                    <img src="logo19.png" alt="Aviator" class="game-logo">
+                    <div class="game-name">Aviator</div>
+                </div>
             </div>
             
-            <div class="game-container" id="minesGame">
-                <img src="logo20.png" alt="Mines" class="game-logo">
-                <div class="game-name">Mines</div>
+            <div class="game-container-wrapper">
+                <div class="game-container" id="minesGame">
+                    <img src="logo20.png" alt="Mines" class="game-logo">
+                    <div class="game-name">Mines</div>
+                </div>
             </div>
         </div>
         
@@ -882,4 +955,4 @@
         });
     </script>
 </body>
-</html>
+    </html>
