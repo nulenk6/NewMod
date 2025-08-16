@@ -851,7 +851,7 @@
             // Select game function
             function selectGame(gameName) {
                 selectedGameName.textContent = gameName;
-                selectedGameLogo.src = gameData[gameName].logo || 'default-logo.png';
+                selectedGameLogo.src = gameData[gameName].logo || 'default.png';
                 gameSelectorDropdown.classList.remove('show');
                 
                 // Save to localStorage
