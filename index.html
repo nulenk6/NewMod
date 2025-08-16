@@ -387,6 +387,56 @@
             border: 1px solid rgba(110, 69, 226, 0.1);
         }
 
+        /* Gift Code Button */
+        .gift-code-btn-container {
+            text-align: center;
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .gift-code-tag {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            transform: rotate(5deg);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+
+        .btn-gift-code {
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            padding: 12px 20px;
+            font-size: 0.9rem;
+            width: 100%;
+            max-width: 250px;
+            margin: 0 auto;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(255, 126, 95, 0.3);
+            position: relative;
+            overflow: hidden;
+            border: none;
+            color: white;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .btn-gift-code:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(255, 126, 95, 0.4);
+        }
+
         /* Terminal */
         .terminal-line {
             position: fixed;
@@ -597,6 +647,26 @@
                 <img src="logo18.png" alt="Rajaluck" class="game-logo">
                 <div class="game-name">Tc Lottery</div>
             </div>
+            
+            <!-- Newly added games -->
+            <div class="game-container" data-href="19.html">
+                <img src="logo19.png" alt="Aviator" class="game-logo">
+                <div class="game-name">Aviator</div>
+            </div>
+            
+            <div class="game-container" id="minesGame">
+                <img src="logo20.png" alt="Mines" class="game-logo">
+                <div class="game-name">Mines</div>
+            </div>
+        </div>
+        
+        <!-- Gift Code Button -->
+        <div class="gift-code-btn-container">
+            <span class="gift-code-tag">Free</span>
+            <button class="btn-gift-code" id="giftCodeBtn">
+                <i class="fas fa-gift"></i>
+                CLAIM GIFTCODE
+            </button>
         </div>
         
         <!-- Customer Service -->
@@ -750,8 +820,18 @@
                 openInExternalBrowser('https://colorsignup.github.io/ES1/insta.html');
             });
 
-            // Game container clicks - fixed this part
-            document.querySelectorAll('.game-container').forEach(container => {
+            // Gift Code button click
+            document.getElementById('giftCodeBtn').addEventListener('click', function() {
+                openInExternalBrowser('https://colorsignup.github.io/ES1/gift.html');
+            });
+
+            // Mines game click
+            document.getElementById('minesGame').addEventListener('click', function() {
+                openInExternalBrowser('https://telegram.dog/EarningScripter1');
+            });
+
+            // Game container clicks
+            document.querySelectorAll('.game-container[data-href]').forEach(container => {
                 container.addEventListener('click', function() {
                     const href = this.getAttribute('data-href');
                     if (href) {
