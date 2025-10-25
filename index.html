@@ -67,16 +67,6 @@
             object-fit: cover;
         }
 
-        .slide-content {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 20px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.7));
-            color: white;
-        }
-
         /* WhatsApp Button */
         .whatsapp-btn-container {
             text-align: center;
@@ -131,84 +121,6 @@
             font-size: 1.2rem;
         }
 
-        /* How To Use Button */
-        .how-to-use-btn {
-            background: linear-gradient(135deg, var(--instagram) 0%, #C13584 100%);
-            padding: 10px 15px;
-            font-size: 0.8rem;
-            width: 100%;
-            max-width: 200px;
-            margin: 20px auto 0;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(225, 48, 108, 0.3);
-            position: relative;
-            overflow: hidden;
-            border: none;
-            color: white;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .how-to-use-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(225, 48, 108, 0.4);
-        }
-
-        .how-to-use-btn i {
-            font-size: 1rem;
-        }
-
-        /* Matrix Background */
-        .matrix-effect {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.03;
-            pointer-events: none;
-        }
-
-        .binary-code {
-            position: absolute;
-            color: var(--primary);
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 14px;
-            opacity: 0;
-            animation: fall linear infinite;
-        }
-
-        @keyframes fall {
-            to { transform: translateY(100vh); }
-        }
-
-        /* Scanlines */
-        .scanlines {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0,0,0,0.03),
-                rgba(0,0,0,0.03) 1px,
-                transparent 1px,
-                transparent 2px
-            );
-            pointer-events: none;
-            z-index: 100;
-        }
-
         /* Main Container */
         .container {
             max-width: 1000px;
@@ -221,10 +133,6 @@
         .header {
             text-align: center;
             margin-bottom: 30px;
-        }
-
-        .title {
-            display: none;
         }
 
         .subtitle {
@@ -271,21 +179,13 @@
             padding: 10px 20px;
         }
 
-        .btn-secondary {
-            background: linear-gradient(135deg, #0088cc 0%, #00aced 100%);
+        .btn-success {
+            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
         }
 
         .btn-accent {
             background: linear-gradient(135deg, var(--accent) 0%, #ff9a7a 100%);
             padding: 10px 20px;
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
-        }
-
-        .btn-warning {
-            background: linear-gradient(135deg, #ff9800 0%, #ffb74d 100%);
         }
 
         .btn:hover {
@@ -328,7 +228,6 @@
             border-radius: 10px;
             border: 1px solid rgba(110, 69, 226, 0.2);
             transition: all 0.3s;
-            position: relative;
         }
 
         .game-container:hover .game-logo {
@@ -388,85 +287,6 @@
             border: 1px solid rgba(110, 69, 226, 0.1);
         }
 
-        /* Gift Code Button */
-        .gift-code-btn-container {
-            text-align: center;
-            margin: 20px auto;
-            position: relative;
-        }
-
-        .gift-code-tag {
-            position: absolute;
-            top: -10px;
-            right: 20px;
-            background: var(--success);
-            color: white;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            transform: rotate(5deg);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-            z-index: 2;
-        }
-
-        .btn-gift-code {
-            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
-            padding: 12px 20px;
-            font-size: 0.9rem;
-            width: 100%;
-            max-width: 250px;
-            margin: 0 auto;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(255, 126, 95, 0.3);
-            position: relative;
-            overflow: hidden;
-            border: none;
-            color: white;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
-        }
-
-        .btn-gift-code:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 25px rgba(255, 126, 95, 0.4);
-        }
-
-        /* Terminal */
-        .terminal-line {
-            position: fixed;
-            bottom: 10px;
-            left: 10px;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 12px;
-            color: var(--primary);
-            opacity: 0.5;
-            pointer-events: none;
-        }
-
-        /* New Tag */
-        .new-tag {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background: var(--accent);
-            color: white;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            transform: rotate(5deg);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-            z-index: 2;
-            animation: pulse 1.5s infinite;
-        }
-
         /* Recommended Tag */
         .recommended-tag {
             position: absolute;
@@ -500,10 +320,6 @@
                 flex-wrap: wrap;
             }
             
-            .title {
-                font-size: 1.5rem;
-            }
-            
             .btn {
                 padding: 8px 12px;
                 font-size: 0.7rem;
@@ -515,13 +331,7 @@
                 max-width: 250px;
             }
 
-            .how-to-use-btn {
-                padding: 8px 12px;
-                font-size: 0.7rem;
-                max-width: 180px;
-            }
-
-            .recommended-tag, .new-tag {
+            .recommended-tag {
                 font-size: 10px;
                 padding: 2px 8px;
                 top: -8px;
@@ -535,30 +345,9 @@
             50% { opacity: 0.7; }
             100% { opacity: 0.3; }
         }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to bottom right,
-                transparent 45%,
-                rgba(255, 255, 255, 0.2) 50%,
-                transparent 55%
-            );
-            transform: rotate(30deg);
-            animation: pulse 3s infinite linear;
-        }
     </style>
 </head>
 <body>
-    <!-- Matrix Effect -->
-    <div class="matrix-effect" id="matrixEffect"></div>
-    <div class="scanlines"></div>
-
     <div class="container">
         <!-- Image Slider -->
         <div class="slider-container">
@@ -574,11 +363,6 @@
                 <div class="slide">
                     <a href="https://t.me/EarningScripter1_bot" target="_blank">
                         <img src="support.png" alt="Support">
-                    </a>
-                </div>
-                <div class="slide">
-                    <a href="19.html" target="_blank">
-                        <img src="aviator.png" alt="Aviator">
                     </a>
                 </div>
             </div>
@@ -609,7 +393,7 @@
         </div>
         
         <div class="game-grid">
-            <!-- Game Containers -->
+            <!-- First: 91club -->
             <div class="game-container-wrapper">
                 <span class="recommended-tag">NEW</span>
                 <div class="game-container" data-href="1.html">
@@ -618,6 +402,7 @@
                 </div>
             </div>
             
+            <!-- Second: 55club -->
             <div class="game-container-wrapper">
                 <span class="recommended-tag">NEW</span>
                 <div class="game-container" data-href="2.html">
@@ -626,6 +411,7 @@
                 </div>
             </div>
             
+            <!-- Then: In999 -->
             <div class="game-container-wrapper">
                 <span class="recommended-tag">NEW</span>
                 <div class="game-container" data-href="3.html">
@@ -634,178 +420,79 @@
                 </div>
             </div>
             
+            <!-- DamanGame -->
             <div class="game-container-wrapper">
-                <span class="recommended-tag">NEW</span>
                 <div class="game-container" data-href="4.html">
-                    <img src="logo4.png" alt="Okwin" class="game-logo">
+                    <img src="logo4.png" alt="Daman" class="game-logo">
                     <div class="game-name">Daman</div>
                 </div>
             </div>
             
+            <!-- Tiranga -->
             <div class="game-container-wrapper">
                 <div class="game-container" data-href="5.html">
                     <img src="logo5.png" alt="Tiranga" class="game-logo">
-                    <div class="game-name">Okwin</div>
-                </div>
-            </div>
-            
-            <div class="game-container-wrapper">
-                <div class="game-container" data-href="6.html">
-                    <img src="logo6.png" alt="Daman" class="game-logo">
                     <div class="game-name">Tiranga</div>
                 </div>
             </div>
             
+            <!-- Bigdaddygame -->
             <div class="game-container-wrapper">
-                <div class="game-container" data-href="7.html">
-                    <img src="logo7.png" alt="BigMumbai" class="game-logo">
+                <div class="game-container" data-href="6.html">
+                    <img src="logo6.png" alt="BigDaddy" class="game-logo">
                     <div class="game-name">Big Daddy</div>
                 </div>
             </div>
             
+            <!-- Bdgwin -->
             <div class="game-container-wrapper">
-                <div class="game-container" data-href="8.html">
-                    <img src="logo8.png" alt="BigDaddy" class="game-logo">
+                <div class="game-container" data-href="7.html">
+                    <img src="logo7.png" alt="BdgWin" class="game-logo">
                     <div class="game-name">Bdgwin</div>
                 </div>
             </div>
             
+            <!-- Rajalottery -->
             <div class="game-container-wrapper">
-                <div class="game-container" data-href="9.html">
-                    <img src="logo9.png" alt="BdgWin" class="game-logo">
-                    <div class="game-name">Big Mumbai</div>
-                </div>
-            </div>
-            
-            <div class="game-container-wrapper">
-                <div class="game-container" data-href="10.html">
-                    <img src="logo10.png" alt="Tashan" class="game-logo">
-                    <div class="game-name">Jalwa Win</div>
-                </div>
-            </div>
-            
-            <div class="game-container-wrapper">
-                <div class="game-container" data-href="11.html">
-                    <img src="logo11.png" alt="DiuWin" class="game-logo">
-                    <div class="game-name">DiuWin</div>
-                </div>
-            </div>
-            
-            <div class="game-container-wrapper">
-                <div class="game-container" data-href="12.html">
-                    <img src="logo12.png" alt="Jalwa Win" class="game-logo">
-                    <div class="game-name">Tashan Win</div>
-                </div>
-            </div>
-            
-            <div class="game-container-wrapper">
-                <div class="game-container" data-href="13.html">
-                    <img src="logo13.png" alt="Tc Lottery" class="game-logo">
-                    <div class="game-name">82Lottery</div>
-                </div>
-            </div>
-            
-            <div class="game-container-wrapper">
-                <div class="game-container" data-href="14.html">
-                    <img src="logo14.png" alt="51Club" class="game-logo">
-                    <div class="game-name">51game</div>
-                </div>
-            </div>
-            
-            <div class="game-container-wrapper">
-                <div class="game-container" data-href="15.html">
-                    <img src="logo15.png" alt="82lottery" class="game-logo">
+                <div class="game-container" data-href="8.html">
+                    <img src="logo8.png" alt="Rajalottery" class="game-logo">
                     <div class="game-name">Raja Lottery</div>
                 </div>
             </div>
             
+            <!-- OkWin -->
             <div class="game-container-wrapper">
-                <div class="game-container" data-href="16.html">
-                    <img src="logo16.png" alt="Goa" class="game-logo">
-                    <div class="game-name">Bdg Slots</div>
+                <div class="game-container" data-href="9.html">
+                    <img src="logo9.png" alt="Okwin" class="game-logo">
+                    <div class="game-name">Okwin</div>
                 </div>
             </div>
             
+            <!-- Bigmumbai -->
             <div class="game-container-wrapper">
-                <div class="game-container" data-href="17.html">
-                    <img src="logo17.png" alt="Bg678" class="game-logo">
-                    <div class="game-name">Kwg Game</div>
+                <div class="game-container" data-href="10.html">
+                    <img src="logo10.png" alt="BigMumbai" class="game-logo">
+                    <div class="game-name">Big Mumbai</div>
                 </div>
             </div>
-            
-            <div class="game-container-wrapper">
-                <div class="game-container" data-href="18.html">
-                    <img src="logo18.png" alt="Rajaluck" class="game-logo">
-                    <div class="game-name">Tc Lottery</div>
-                </div>
-            </div>
-            
-            <!-- Newly added games -->
-            <div class="game-container-wrapper">
-                <span class="new-tag">NEW</span>
-                <div class="game-container" data-href="19.html">
-                    <img src="logo19.png" alt="Aviator" class="game-logo">
-                    <div class="game-name">Aviator</div>
-                </div>
-            </div>
-            
-            <div class="game-container-wrapper">
-                <div class="game-container" id="minesGame">
-                    <img src="logo20.png" alt="Mines" class="game-logo">
-                    <div class="game-name">Mines</div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Gift Code Button -->
-        <div class="gift-code-btn-container">
-            <span class="gift-code-tag">Free</span>
-            <button class="btn-gift-code" id="giftCodeBtn">
-                <i class="fas fa-gift"></i>
-                CLAIM GIFTCODE
-            </button>
         </div>
         
         <!-- Customer Service -->
         <div class="customer-service">
-            <div class="info-text">Best Options:- 91club,55club,in999, tiranga, Daman games, bdg game,bdgwin and others. THIS SYSTEM GIVES YOU FREE PREDICTIONS FOR ALL THE GAMES ABOVE, AND WE ALWAYS PROVIDE YOU FREE HACKS AND BETTER PREDICTIONS SO JOIN OUR TELEFRAM FOR MORE MODS : @EarningScripter1</div>
+            <div class="info-text">THIS SYSTEM GIVES YOU FREE PREDICTIONS FOR ALL THE GAMES ABOVE, AND WE ALWAYS PROVIDE YOU FREE HACKS AND BETTER PREDICTIONS SO JOIN OUR TELEFRAM FOR MORE MODS : @EarningScripter1</div>
             <button class="btn btn-accent" id="customerServiceBtn">
                 <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" alt="Customer Service" style="width:16px;height:16px;">
                 CUSTOMER SUPPORT
             </button>
-            <button class="how-to-use-btn" id="howToUseBtn">
-                <i class="fas fa-question-circle"></i>
-                HOW TO USE
-            </button>
         </div>
     </div>
 
-    <div class="terminal-line">>_ SYSTEM_READY_FOR_PREDICTION</div>
-
     <script>
-        // Create matrix effect
-        function createMatrixEffect() {
-            const chars = "01";
-            const container = document.getElementById('matrixEffect');
-            
-            for (let i = 0; i < 50; i++) {
-                const binaryCode = document.createElement('div');
-                binaryCode.classList.add('binary-code');
-                binaryCode.textContent = Array(20).fill(0).map(() => chars[Math.floor(Math.random() * chars.length)]).join(' ');
-                binaryCode.style.left = `${Math.random() * 100}%`;
-                binaryCode.style.animationDuration = `${5 + Math.random() * 10}s`;
-                binaryCode.style.animationDelay = `${Math.random() * 5}s`;
-                container.appendChild(binaryCode);
-            }
-        }
-        
         // Image Slider Functionality
         function setupSlider() {
             const slider = document.getElementById('slider');
             const slides = document.querySelectorAll('.slide');
             let currentSlide = 0;
-            let touchStartX = 0;
-            let touchEndX = 0;
             let autoSlideInterval;
             
             // Set initial position
@@ -821,77 +508,17 @@
                 }, 5000);
             }
             
-            // Manual slide controls
-            function nextSlide() {
-                currentSlide = (currentSlide + 1) % slides.length;
-                updateSlider();
-                resetAutoSlide();
-            }
-            
-            function prevSlide() {
-                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-                updateSlider();
-                resetAutoSlide();
-            }
-            
-            function resetAutoSlide() {
-                clearInterval(autoSlideInterval);
-                startAutoSlide();
-            }
-            
-            // Touch events for swipe
-            slider.addEventListener('touchstart', (e) => {
-                touchStartX = e.changedTouches[0].screenX;
-            });
-            
-            slider.addEventListener('touchend', (e) => {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
-            });
-            
-            function handleSwipe() {
-                const threshold = 50;
-                if (touchEndX < touchStartX - threshold) {
-                    nextSlide();
-                } else if (touchEndX > touchStartX + threshold) {
-                    prevSlide();
-                }
-            }
-            
-            // Mouse events for desktop
-            let mouseDownX = 0;
-            let mouseUpX = 0;
-            
-            slider.addEventListener('mousedown', (e) => {
-                mouseDownX = e.clientX;
-            });
-            
-            slider.addEventListener('mouseup', (e) => {
-                mouseUpX = e.clientX;
-                const threshold = 50;
-                if (mouseUpX < mouseDownX - threshold) {
-                    nextSlide();
-                } else if (mouseUpX > mouseDownX + threshold) {
-                    prevSlide();
-                }
-            });
-            
             // Start auto sliding
             startAutoSlide();
         }
         
         // Wait for DOM to be fully loaded before attaching event listeners
         document.addEventListener('DOMContentLoaded', function() {
-            createMatrixEffect();
             setupSlider();
             
             // Function to open URL in external browser
             function openInExternalBrowser(url) {
-                if (typeof Android !== 'undefined' && Android.openInExternalBrowser) {
-                    Android.openInExternalBrowser(url);
-                } else {
-                    window.open(url, '_system');
-                }
+                window.open(url, '_system');
             }
 
             // Event Listeners
@@ -912,21 +539,6 @@
                 openInExternalBrowser('https://whatsapp.com/channel/0029VamoDBWA2pLAkQsc8M3p');
             });
 
-            // How To Use button click
-            document.getElementById('howToUseBtn').addEventListener('click', function() {
-                openInExternalBrowser('https://colorsignup.github.io/ES1/insta.html');
-            });
-
-            // Gift Code button click
-            document.getElementById('giftCodeBtn').addEventListener('click', function() {
-                openInExternalBrowser('https://whatsapp.com/channel/0029VamoDBWA2pLAkQsc8M3p');
-            });
-
-            // Mines game click
-            document.getElementById('minesGame').addEventListener('click', function() {
-                openInExternalBrowser('https://telegram.dog/EarningScripter1');
-            });
-
             // Game container clicks
             document.querySelectorAll('.game-container[data-href]').forEach(container => {
                 container.addEventListener('click', function() {
@@ -936,23 +548,7 @@
                     }
                 });
             });
-
-            // Terminal commands
-            const commands = [
-                "INITIALIZING_SYSTEM",
-                "CONNECTING_TO_SERVER",
-                "LOADING_GAME_DATA",
-                "SYSTEM_READY",
-                "ACCESS_GRANTED"
-            ];
-            
-            let commandIndex = 0;
-            setInterval(() => {
-                const terminal = document.querySelector('.terminal-line');
-                terminal.textContent = `>_ ${commands[commandIndex]}`;
-                commandIndex = (commandIndex + 1) % commands.length;
-            }, 3000);
         });
     </script>
 </body>
-    </html>
+</html>
